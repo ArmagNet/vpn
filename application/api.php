@@ -1,20 +1,20 @@
 <?php /*
-	Copyright 2014 Cédric Levieux, Jérémy Collot, ArmagNet
+	Copyright 2014-2015 Cédric Levieux, Jérémy Collot, ArmagNet
 
-	This file is part of Parpaing.
+	This file is part of VPN.
 
-    Parpaing is free software: you can redistribute it and/or modify
+    VPN is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Parpaing is distributed in the hope that it will be useful,
+    VPN is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Parpaing.  If not, see <http://www.gnu.org/licenses/>.
+    along with VPN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once("config/database.php");
@@ -37,7 +37,7 @@ if (!file_exists("api/$method.php")) {
 
 $arguments = $_POST;
 
-error_log(print_r($_POST, true));
+//error_log(print_r($_POST, true));
 
 include("api/$method.php");
 
