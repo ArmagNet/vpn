@@ -42,6 +42,7 @@ $lang["menu_vpns"] = "VPN";
 $lang["menu_create_vpn"] = "Création d'un accès";
 
 $lang["menu_logout"] = "Se déconnecter";
+$lang["menu_login"] = "Se connecter";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
