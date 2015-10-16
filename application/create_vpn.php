@@ -31,7 +31,7 @@ include_once("header.php");
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Ouvrir un compte ArmagNet avec un accès VPN</h3>
+				<h3 class="panel-title"><?php echo lang("vpn_create_armagnet_account_panel"); ?></h3>
 			</div>
 			<div class="panel-body">
 				<form class="form-horizontal" id="createArmagnetVpnForm">

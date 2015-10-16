@@ -77,3 +77,16 @@ html,body {
 	box-shadow: none;
 	-webkit-box-shadow: none;
 }
+
+#loginForm {
+    position: relative;
+    z-index: 1000;
+    width: 260px;
+    margin-left: -260px;
+    float: right;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.75);
+    top: -60px;
+    right: 10px;
+    border-radius: 10px;
+}

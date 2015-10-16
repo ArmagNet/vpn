@@ -36,13 +36,12 @@ $lang["language_de"] = "Allemand";
 
 $lang["vpn_title"] = "ArmagNet VPN - Le VPN Associatif";
 
+$lang["menu_logout"] = "Se déconnecter";
+$lang["menu_login"] = "Se connecter";
 $lang["menu_language"] = "Langue : {language}";
 $lang["menu_index"] = "Accueil";
 $lang["menu_vpns"] = "VPN";
 $lang["menu_create_vpn"] = "Création d'un accès";
-
-$lang["menu_logout"] = "Se déconnecter";
-$lang["menu_login"] = "Se connecter";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
@@ -79,6 +78,9 @@ $lang["vpn_configuration_remoteip"] = "remote ip";
 $lang["vpn_configuration_remoteport"] = "remote port";
 $lang["vpn_configuration_remotecerttls"] = "remote cert tls";
 $lang["vpn_configuration_ovpn"] = "Fichier de configuration OpenVpn";
+
+$lang["error_login_ban"] = "Votre IP a été bloquée pour 10mn.";
+$lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
 
 $lang["mypreferences_guide"] = "Changer mes préférences.";
 $lang["mypreferences_form_legend"] = "Configuration de vos accès";
@@ -144,5 +146,5 @@ Veuillez le changer aussitôt que vous serez connecté.
 L'équipe #VPN";
 
 $lang["about_footer"] = "À Propos";
-$lang["vpn_footer"] = "<a href=\"https://vpn.armagnet.fr/\" target=\"_blank\">VPN</a> est une application fournie par <a href=\"https://www.armagnet.fr\" target=\"_blank\">ArmagNet</a>";
+$lang["vpn_footer"] = "<a href=\"https://www.armagnet.fr/vpn/\" target=\"_blank\">VPN</a> est une application fournie par <a href=\"https://www.armagnet.fr\" target=\"_blank\">ArmagNet</a>";
 ?>

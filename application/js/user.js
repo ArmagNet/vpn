@@ -18,6 +18,26 @@
 */
 
 $(function() {
+	$("#rememberMe").click(function(event) {
+		if ($(this).attr("checked")) {
+			$(this).removeAttr("checked");
+		}
+		else {
+			$(this).attr("checked", "checked");
+		}
+	});
+
+	$("#loginLink, #connectButton").click(function(event) {
+		event.stopPropagation();
+		event.preventDefault();
+
+		$("#loginForm").show();
+	});
+
+	$("#loginForm").mouseleave(function(event) {
+		$("#loginForm").hide();
+	});
+
 	$("#loginForm #renewButton").click(function(event) {
 		event.stopPropagation();
 		event.preventDefault();
@@ -30,28 +50,21 @@ $(function() {
 		event.preventDefault();
 
 		var myform = {
+			login : $("#loginInput").val(),
 			password : $("#passwordInput").val(),
-			newPassword : $("#newPasswordInput").val(),
-			confirmNewPassword : $("#confirmNewPasswordInput").val()
+			rememberMe : $("#rememberMe").attr("checked") ? 1 : 0
 		};
 
 		$.post("do_login.php", myform, function(data) {
-//			$("#loginForm").hide();
-//			return;
-			$(".renew-password").addClass("hidden");
-
-			if (data.status == "ok") {
+			$("#loginForm").hide();
+			if (data.ok) {
 				window.location.reload(true);
+			} else {
+				$("#" + data.message + "Alert").parents(".container").show();
+				$("#" + data.message + "Alert").show().delay(2000).fadeOut(1000, function() {
+					$(this).parents(".container").hide();
+				});
 			}
-			else if (data.status == "renew_password") {
-				$(".renew-password").removeClass("hidden");
-			}
-
-			$("#" + data.message + "Alert").parent(".container").removeClass("hidden");
-			$("#" + data.message + "Alert").removeClass("hidden").show().delay(2000).fadeOut(1000, function() {
-				$(this).parent(".container").addClass("hidden");
-			});
-
 		}, "json");
 	});
 

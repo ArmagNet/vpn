@@ -124,3 +124,33 @@ $connection = openConnection();
 			</div>
 		</div>
 	</nav>
+
+	<div class="container otbHidden" id="loginForm">
+		<form class="form-signin" role="form">
+			<h2 class="form-signin-heading text-center"><?php echo lang("login_title"); ?></h2>
+			<label for="inputLogin" class="sr-only"><?php echo lang("login_loginInput"); ?></label> <input type="text" id="loginInput" class="form-control" placeholder="<?php echo lang("login_loginInput"); ?>" required
+				autofocus> <label for="inputPassword" class="sr-only"><?php echo lang("login_passwordInput"); ?></label> <input type="password" id="passwordInput" class="form-control"
+				placeholder="<?php echo lang("login_passwordInput"); ?>" required>
+
+			<!--
+			<input type="checkbox" name="rememberMe" id="rememberMe" value="1">
+			<label for="rememberMe"><?php echo lang("login_rememberMe"); ?></label>
+			 -->
+
+			<br />
+			<button id="loginButton" class="btn btn-lg btn-primary btn-block" type="submit">
+				<?php echo lang("login_button"); ?> <span class="glyphicon glyphicon-log-in"></span>
+			</button>
+
+			<!--
+			<p class="text-center"><a href="register.php" class="colorInherit"><?php echo lang("register_link"); ?></a></p>
+			<p class="text-center"><a href="forgotten.php" class="colorInherit"><?php echo lang("forgotten_link"); ?></a></p>
+			 -->
+			 <br />
+		</form>
+	</div>
+
+	<div class="container otbHidden">
+		<?php echo addAlertDialog("error_login_banAlert", lang("error_login_ban"), "danger"); ?>
+		<?php echo addAlertDialog("error_login_badAlert", lang("error_login_bad"), "warning"); ?>
+	</div>

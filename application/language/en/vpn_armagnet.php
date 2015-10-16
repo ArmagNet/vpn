@@ -17,6 +17,7 @@
     along with VPN.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+$lang["vpn_create_armagnet_account_panel"] = "Open an ArmagNet account with VPN access";
 $lang["vpn_create_armagnet_account_legend"] = "Account";
 $lang["vpn_create_armagnet_account_hasOne"] = "I have an account";
 $lang["vpn_create_armagnet_account_login"] = "Login";
