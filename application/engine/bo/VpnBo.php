@@ -116,5 +116,16 @@ class VpnBo {
 
 		return count($vpns) > 0;
 	}
+
+	function addValidity($vpn, $validity) {
+		$query = "	UPDATE vpns
+					SET vpn_end_date = DATE_ADD(vpn_end_date, INTERVAL :validity MONTH)
+					WHERE vpn_id = :vpn_id";
+
+		$args = array("validity" => $validity, "vpn_id" => $vpn["vpn_id"]);
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($args);
+	}
 }
 ?>

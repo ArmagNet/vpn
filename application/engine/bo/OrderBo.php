@@ -152,7 +152,12 @@ class OrderBo {
 		switch ($code) {
 			case "vpn_membership":
 			case "vpn_year":
+				$validity = 12;
 			case "vpn_6months":
+				if (!isset($validity)) {
+					$validity = 6;
+				}
+
 				$vpnId = $orderLine["oli_additional_information"]["vpnId"];
 
 				$vpnBo = VpnBo::newInstance($this->pdo);
@@ -164,10 +169,14 @@ class OrderBo {
 
 				if (count($vpns)) {
 					$vpn = $vpns[0];
-//					echo "Activate : " . $vpn["vpn_cn"] . "\n";
-//					echo
-//					shell_exec("api/activateCn.sh \"BIBI BOBO\"");
-//					echo "\n";
+
+					if (!$vpn["vpn_end_date"]) {
+						$vpn["vpn_end_date"] = date("Y-m-d");
+						$vpnBo->save($vpn);
+					}
+
+					$vpnBo->addValidity($vpn, $validity);
+
 					shell_exec("api/activateCn.sh \"".$vpn["vpn_cn"]."\"");
 				}
 

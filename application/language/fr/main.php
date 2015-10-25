@@ -78,6 +78,7 @@ $lang["vpn_configuration_remoteip"] = "remote ip";
 $lang["vpn_configuration_remoteport"] = "remote port";
 $lang["vpn_configuration_remotecerttls"] = "remote cert tls";
 $lang["vpn_configuration_ovpn"] = "Fichier de configuration OpenVpn";
+$lang["vpn_configuration_end_date"] = "Date limite de validité";
 
 $lang["error_login_ban"] = "Votre IP a été bloquée pour 10mn.";
 $lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";

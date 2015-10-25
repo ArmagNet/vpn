@@ -139,6 +139,19 @@ $vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_acc
 								</div>
 							</div>
 
+							<div class="form-group">
+								<label class="col-md-8 control-label" for="endDateLabel"><?php echo lang("vpn_configuration_end_date");?> :</label>
+								<div class="col-md-4">
+									<?php
+
+									$date = new DateTime($vpn["vpn_end_date"]);
+
+									echo $date->format("d/m/Y");
+
+									?>
+								</div>
+							</div>
+
 						</fieldset>
 					</form>
 				</div>

@@ -57,7 +57,7 @@ if ($response["status"] == "finished") {
 	$order = $orderBo->get($payment["pay_order_id"]);
 
 	foreach($order["ord_lines"] as $orderLine) {
-		print_r($orderLine);
+//		print_r($orderLine);
 		$orderBo->execute($orderLine);
 	}
 

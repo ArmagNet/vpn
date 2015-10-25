@@ -66,7 +66,7 @@ class PaynameApiClient {
 		$url .= $method;
 		$url .= "?";
 
-		//url-ify the data for the POST
+		//url-ify the data for the GET
 		$fieldsString = http_build_query($fields);
 
 		$url .= $fieldsString;
