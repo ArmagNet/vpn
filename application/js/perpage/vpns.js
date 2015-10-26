@@ -129,6 +129,8 @@ function updateLogs() {
 				}
 			}
 
+			var chartWidth = $(".breadcrumb").width() - 55;
+
 			for(var panelId in stats) {
 				var logs = stats[panelId];
 
@@ -143,7 +145,7 @@ function updateLogs() {
 				var chart = new CanvasJS.Chart(panelId + "-chart",
 		    	    {
 					  height: 300,
-					  width: 1055,
+					  width: chartWidth,
 		    	      title:{
 		    	/*        text: "Tweets et Validation dans le temps"*/
 		    	      },
