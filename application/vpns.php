@@ -39,6 +39,18 @@ $vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_acc
 
 	<div class="col-md-12">
 
+	<form class="form-horizontal">
+		<fieldset>
+
+			<div class="form-group">
+				<div class="col-md-12 chart" id="all-chart" style="width: 98%; height: 300px; display: none;">
+				</div>
+			</div>
+
+		</fieldset>
+	</form>
+
+
 <?php 	foreach($vpns as $vpn) {
 			$vpnId = "vpn-" . $vpn["vpn_id"] . "-" . $vpn["vse_id"];
 ?>
@@ -57,7 +69,7 @@ $vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_acc
 
 					<form class="form-horizontal">
 						<fieldset>
-
+							<legend></legend>
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="keyButton"><?php echo lang("vpn_configuration_key");?> :</label>
 								<div class="col-md-4">
@@ -128,8 +140,6 @@ $vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_acc
 								</div>
 							</div>
 
-						</fieldset>
-						<fieldset id="opvnFieldset">
 							<legend></legend>
 
 							<div class="form-group">
@@ -149,6 +159,44 @@ $vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_acc
 									echo $date->format("d/m/Y");
 
 									?>
+								</div>
+							</div>
+
+							<legend></legend>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo lang("vpn_log_since");?> :</label>
+								<div class="col-md-4 log-since">
+								-
+								</div>
+								<label class="col-md-2 control-label"><?php echo lang("vpn_log_update");?> :</label>
+								<div class="col-md-4 log-update">
+								-
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo lang("vpn_log_upload");?> :</label>
+								<div class="col-md-4 log-upload">
+								-
+								</div>
+								<label class="col-md-2 control-label"><?php echo lang("vpn_log_download");?> :</label>
+								<div class="col-md-4 log-download">
+								-
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><?php echo lang("vpn_log_upload_rate");?> :</label>
+								<div class="col-md-4 log-upload-rate">
+								-
+								</div>
+								<label class="col-md-2 control-label"><?php echo lang("vpn_log_download_rate");?> :</label>
+								<div class="col-md-4 log-download-rate">
+								-
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-md-12 chart" id="<?php echo $vpnId?>-chart" style="width: 98%; height: 300px; display: none;">
 								</div>
 							</div>
 

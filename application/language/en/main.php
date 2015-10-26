@@ -79,6 +79,12 @@ $lang["vpn_configuration_remoteport"] = "remote port";
 $lang["vpn_configuration_remotecerttls"] = "remote cert tls";
 $lang["vpn_configuration_ovpn"] = "OpenVpn configuration file";
 $lang["vpn_configuration_end_date"] = "Validity limit date";
+$lang["vpn_log_since"] = "Connected since";
+$lang["vpn_log_update"] = "Last update";
+$lang["vpn_log_upload_rate"] = "Upload rate";
+$lang["vpn_log_download_rate"] = "Download rate";
+$lang["vpn_log_upload"] = "Upload";
+$lang["vpn_log_download"] = "Download";
 
 $lang["error_login_ban"] = "Your IP has been blocked for 10mn.";
 $lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";

@@ -82,7 +82,7 @@ class VpnBo {
 		}
 
 		if ($filters && isset($filters["vpn_cn"]) && $filters["vpn_cn"]) {
-			$args["vpn_id"] = $filters["vpn_cn"];
+			$args["vpn_cn"] = $filters["vpn_cn"];
 			$query .= "	AND vpn_cn = :vpn_cn";
 		}
 
@@ -95,8 +95,6 @@ class VpnBo {
 			$args["vse_id"] = $filters["vse_id"];
 			$query .= "	AND vse_id = :vse_id";
 		}
-
-//		echo showQuery($query, $args);
 
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
@@ -126,6 +124,119 @@ class VpnBo {
 
 		$statement = $this->pdo->prepare($query);
 		$statement->execute($args);
+	}
+
+	function addVpnLog(&$log) {
+		if (isset($log["vlo_cn"])) {
+			$vpns = $this->getVpns(array("vpn_cn" => $log["vlo_cn"]));
+
+			if (!count($vpns)) return false;
+
+			// Search the vpn_id
+			$log["vlo_vpn_id"] = $vpns[0]["vpn_id"];
+			unset($log["vlo_cn"]);
+		}
+
+		$query = "	SELECT *
+					FROM vpn_logs
+					WHERE
+						vlo_vpn_id = :vlo_vpn_id
+					AND vlo_since_date = :vlo_since_date
+					ORDER BY vlo_log_date DESC
+					LIMIT 0, 1";
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute(array("vlo_vpn_id" => $log["vlo_vpn_id"], "vlo_since_date" => $log["vlo_since_date"]));
+		$results = $statement->fetchAll();
+
+		if (count($results)) {
+			$previousLog = $results[0];
+
+			$fromDate = new DateTime($previousLog["vlo_log_date"]);
+			$toDate = new DateTime($log["vlo_log_date"]);
+
+			$interval = $toDate->getTimestamp() - $fromDate->getTimestamp();
+
+			$log["vlo_upload_rate"] = ($log["vlo_upload"] - $previousLog["vlo_upload"]) / $interval;
+			$log["vlo_download_rate"] = ($log["vlo_download"] - $previousLog["vlo_download"]) / $interval;
+		}
+		else {
+			$fromDate = new DateTime($log["vlo_since_date"]);
+			$toDate = new DateTime($log["vlo_log_date"]);
+
+			$interval = $toDate->getTimestamp() - $fromDate->getTimestamp();
+
+			$log["vlo_upload_rate"] = $log["vlo_upload"] / $interval;
+			$log["vlo_download_rate"] = $log["vlo_download"] / $interval;
+		}
+
+		$query = "	INSERT INTO vpn_logs
+						(
+							vlo_server_id, vlo_vpn_id,
+							vlo_client_ip, vlo_client_port,
+							vlo_upload, vlo_upload_rate,
+							vlo_download, vlo_download_rate,
+							vlo_since_date, vlo_log_date
+						)
+					VALUES
+						(
+							:vlo_server_id, :vlo_vpn_id,
+							:vlo_client_ip, :vlo_client_port,
+							:vlo_upload, :vlo_upload_rate,
+							:vlo_download, :vlo_download_rate,
+							:vlo_since_date, :vlo_log_date
+						)";
+
+//		echo showQuery($query, $log);
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute($log);
+
+		$log["vlo_id"] = $this->pdo->lastInsertId();
+	}
+
+	function getLogs($vpns) {
+		$ids = "";
+		$separator = "";
+
+		foreach($vpns as $vpn) {
+			$ids .= $separator;
+			$separator = ", ";
+			$ids .= $vpn["vpn_id"];
+		}
+
+		/*
+		$query = "	SELECT
+						vpn_id, vpn_logs.*,
+						(SELECT MAX(vlo_log_date) FROM vpn_logs WHERE vlo_vpn_id = vpn_id) AS vlo_last_log_date
+					FROM `vpns`
+					LEFT JOIN vpn_logs ON vlo_vpn_id = vpn_id
+					WHERE vpn_id IN ($ids)
+					HAVING vlo_last_log_date = vlo_log_date
+					OR vlo_log_date IS NULL";
+*/
+
+//		(SELECT MAX(vlo_log_date) FROM vpn_logs WHERE vlo_vpn_id = vpn_id) AS vlo_last_log_date,
+
+		$query = "	SELECT
+						vpn_id, vpn_logs.*,
+						IF((SELECT MAX(vlo_log_date) FROM vpn_logs WHERE vlo_vpn_id = vpn_id) = vlo_log_date, 1, 0) as vlo_last_log
+					FROM `vpns`
+					LEFT JOIN vpn_logs ON vlo_vpn_id = vpn_id
+					WHERE vpn_id IN ($ids) AND vlo_log_date >= DATE_SUB(now(), INTERVAL 3 HOUR)
+					ORDER BY vpn_id, vlo_log_date DESC";
+
+		$statement = $this->pdo->prepare($query);
+		$statement->execute();
+		$results = $statement->fetchAll();
+
+		foreach($results as $index => $line) {
+			foreach($line as $key => $value) {
+				if (is_int($key)) unset($results[$index][$key]);
+			}
+		}
+
+		return $results;
 	}
 }
 ?>
