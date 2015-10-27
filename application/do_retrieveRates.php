@@ -20,25 +20,25 @@ session_start();
 require_once("config/database.php");
 require_once("engine/utils/SessionUtils.php");
 require_once("engine/bo/VpnBo.php");
+require_once("engine/bo/VpnServerBo.php");
 
 $accountId = SessionUtils::getUserId($_SESSION);
-
-if (!$accountId) {
-	echo json_encode(array("ko" => "ko", "message" => "no_session"));
-	exit();
-}
-
 $connection = openConnection();
-$vpnBo = VpnBo::newInstance($connection);
-$vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_account_id" => $accountId));
 
-if (count($vpns) == 0) {
-//	echo "no vpn";
-	header("Location: index.php");
-	exit();
+$logs =array();
+
+if ($accountId) {
+	$vpnBo = VpnBo::newInstance($connection);
+	$vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_account_id" => $accountId));
+
+	if (count($vpns) != 0) {
+		$logs = $vpnBo->getLogs($vpns);
+	}
 }
 
-$logs = $vpnBo->getLogs($vpns);
+$vpnServerBo = VpnServerBo::newInstance($connection);
 
-echo json_encode(array("ok" => "ok", "logs" => $logs));
+$servers = $vpnServerBo->getLogs();
+
+echo json_encode(array("ok" => "ok", "logs" => $logs, "servers" => $servers));
 ?>

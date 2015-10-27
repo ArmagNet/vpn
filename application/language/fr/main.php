@@ -42,6 +42,7 @@ $lang["menu_language"] = "Langue : {language}";
 $lang["menu_index"] = "Accueil";
 $lang["menu_vpns"] = "VPN";
 $lang["menu_create_vpn"] = "Création d'un accès";
+$lang["menu_servers"] = "Serveurs";
 
 $lang["login_title"] = "Identifiez vous";
 $lang["login_loginInput"] = "Identifiant";
@@ -55,6 +56,7 @@ $lang["breadcrumb_index"] = "Accueil";
 $lang["breadcrumb_vpns"] = "VPN";
 $lang["breadcrumb_payment"] = "Paiement";
 $lang["breadcrumb_create_vpn"] = "Création d'un accès VPN";
+$lang["breadcrumb_servers"] = "Serveurs";
 
 $lang["index_guide"] = "L'interface de gestion de votre VPN associatif.";
 

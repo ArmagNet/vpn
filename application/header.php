@@ -22,6 +22,11 @@ include_once("language/language.php");
 require_once("engine/bo/AccountBo.php");
 include_once("engine/utils/bootstrap_forms.php");
 require_once("engine/utils/SessionUtils.php");
+require_once("engine/bo/VpnBo.php");
+
+$connection = openConnection();
+
+$vpnBo = VpnBo::newInstance($connection);
 
 $page = $_SERVER["SCRIPT_NAME"];
 if (strrpos($page, "/") !== false) {
@@ -34,17 +39,17 @@ $accountId = SessionUtils::getUserId($_SESSION);
 
 if ($accountId != null) {
 	$isConnected = true;
+
+	$vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_account_id" => $accountId));
 }
 else {
-	if ($page != "index" && $page != "create_vpn" && strpos($page, "payment") === false) {
+	if ($page != "index" && $page != "create_vpn" && $page != "servers" && strpos($page, "payment") === false) {
 		header("Location: index.php");
 		exit();
 	}
 }
 
 $language = SessionUtils::getLanguage($_SESSION);
-
-$connection = openConnection();
 
 ?>
 <!DOCTYPE html>
@@ -93,6 +98,7 @@ $connection = openConnection();
 				<ul class="nav navbar-nav">
 					<li <?php if ($page == "index") echo 'class="active"'; ?>><a href="index.php"><?php echo lang("menu_index"); ?><?php if ($page == "index") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<li <?php if ($page == "create_vpn") echo 'class="active"'; ?>><a href="create_vpn.php"><?php echo lang("menu_create_vpn"); ?><?php if ($page == "create_vpn") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
+					<li <?php if ($page == "servers") echo 'class="active"'; ?>><a href="servers.php"><?php echo lang("menu_servers"); ?><?php if ($page == "servers") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php if ($isConnected) {?>
 					<li <?php if ($page == "vpns") echo 'class="active"'; ?>><a href="vpns.php"><?php echo lang("menu_vpns"); ?><?php if ($page == "vpns") echo ' <span class="sr-only">(current)</span>'; ?></a></li>
 					<?php 	if (false) {?>
@@ -113,6 +119,18 @@ $connection = openConnection();
 						</ul>
 					</li>
 
+					<?php 	if (count($vpns)) {?>
+					<li>
+						<a href="#">
+							<span class="badge">
+								<span id="total-download-rate" title="<?php echo lang("vpn_log_download_rate"); ?>"
+									data-toggle="tooltip" data-placement="bottom"></span> /
+								<span id="total-upload-rate" title="<?php echo lang("vpn_log_upload_rate"); ?>"
+									data-toggle="tooltip" data-placement="bottom"></span>
+							</span>
+						</a>
+					</li>
+					<?php 	}?>
 					<?php 	if ($isConnected) {?>
 					<li><a class="logoutLink" href="do_logout.php" title="<?php echo lang("menu_logout"); ?>"
 						data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-log-out"></span><span class="sr-only">Logout</span> </a></li>

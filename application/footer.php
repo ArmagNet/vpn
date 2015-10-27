@@ -36,6 +36,7 @@
 <script src="js/window.js"></script>
 <script src="js/canvasjs.min.js"></script>
 <script src="js/pagination.js"></script>
+<script src="js/vpns.js"></script>
 <?php
 if (is_file("js/perpage/" . $page . ".js")) {
 	echo "<script src=\"js/perpage/" . $page . ".js\"></script>\n";

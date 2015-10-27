@@ -18,11 +18,6 @@
 */
 include_once("header.php");
 
-require_once("engine/bo/VpnBo.php");
-
-$vpnBo = VpnBo::newInstance($connection);
-$vpns = $vpnBo->getVpns(array("with_account" => 1, "with_servers" => 1, "vpn_account_id" => $accountId));
-
 ?>
 
 <style>

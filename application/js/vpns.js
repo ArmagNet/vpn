@@ -19,6 +19,7 @@ function updateLogs() {
 	$.get("do_retrieveRates.php", null, function(data) {
 		if (data.ok) {
 			var stats = {};
+			var total = {uploadRate: 0, downloadRate: 0};
 
 			$(".panel").removeClass("panel-success");
 
@@ -32,8 +33,8 @@ function updateLogs() {
 
 					var panel = $("#" + vpnId);
 
-					if (panel.length) {
-						if (log["vlo_last_log"] == 1) {
+					if (log["vlo_last_log"] == 1) {
+						if (panel.length) {
 							panel.parent(".panel").addClass("panel-success");
 
 							panel.find(".log-since").text(moment(new Date(log["vlo_since_date"])).locale("fr").format("llll"));
@@ -45,86 +46,88 @@ function updateLogs() {
 							panel.find(".log-download").text(humanFileSize(log["vlo_download"] * 1., false));
 						}
 
-						if (!stats[vpnId]) {
-							stats[vpnId] = {uploads: [], downloads: []};
+						total["uploadRate"] += log["vlo_upload_rate"] * 1.;
+						total["downloadRate"] += log["vlo_download_rate"] * 1.;
+					}
+
+					if (!stats[vpnId]) {
+						stats[vpnId] = {uploads: [], downloads: []};
+					}
+
+					if (!stats[serverId]) {
+						stats[serverId] = {uploads: [], downloads: []};
+					}
+
+					if (!stats[allId]) {
+						stats[allId] = {uploads: [], downloads: []};
+					}
+
+					// Upload
+
+					var stat = {
+						x: new Date(log["vlo_log_date"]),
+						y: log["vlo_upload_rate"] * 1.,
+						x_string : log["vlo_log_date"]
+					};
+
+					stats[vpnId]["uploads"][stats[vpnId]["uploads"].length] = stat;
+
+					found = false;
+					for(var jndex = 0; jndex < stats[serverId]["uploads"].length; ++jndex) {
+						if (stats[serverId]["uploads"][jndex].x_string == stat.x_string) {
+							stats[serverId]["uploads"][jndex].y += stat.y;
+							found = true;
+							break;
 						}
+					}
+					if (!found) {
+						stats[serverId]["uploads"][stats[serverId]["uploads"].length] = stat;
+					}
 
-						if (!stats[serverId]) {
-							stats[serverId] = {uploads: [], downloads: []};
+					found = false;
+					for(var jndex = 0; jndex < stats[allId]["uploads"].length; ++jndex) {
+						if (stats[allId]["uploads"][jndex].x_string == stat.x_string) {
+							stats[allId]["uploads"][jndex].y += stat.y;
+							found = true;
+							break;
 						}
+					}
+					if (!found) {
+						stats[allId]["uploads"][stats[allId]["uploads"].length] = stat;
+					}
 
-						if (!stats[allId]) {
-							stats[allId] = {uploads: [], downloads: []};
+					// Download
+
+					var stat = {
+						x: new Date(log["vlo_log_date"]),
+						y: log["vlo_download_rate"] * 1.,
+						x_string : log["vlo_log_date"]
+					};
+
+					stats[vpnId]["downloads"][stats[vpnId]["downloads"].length] = stat;
+
+					found = false;
+					for(var jndex = 0; jndex < stats[serverId]["downloads"].length; ++jndex) {
+						if (stats[serverId]["downloads"][jndex].x_string == stat.x_string) {
+							stats[serverId]["downloads"][jndex].y += stat.y;
+							found = true;
+							break;
 						}
+					}
+					if (!found) {
+						stats[serverId]["downloads"][stats[serverId]["downloads"].length] = stat;
+					}
 
-						// Upload
-
-						var stat = {
-							x: new Date(log["vlo_log_date"]),
-							y: log["vlo_upload_rate"] * 1.,
-							x_string : log["vlo_log_date"]
-						};
-
-						stats[vpnId]["uploads"][stats[vpnId]["uploads"].length] = stat;
-
-						found = false;
-						for(var jndex = 0; jndex < stats[serverId]["uploads"].length; ++jndex) {
-							if (stats[serverId]["uploads"][jndex].x_string == stat.x_string) {
-								stats[serverId]["uploads"][jndex].y += stat.y;
-								found = true;
-								break;
-							}
+					found = false;
+					for(var jndex = 0; jndex < stats[allId]["downloads"].length; ++jndex) {
+						if (stats[allId]["downloads"][jndex].x_string == stat.x_string) {
+							stats[allId]["downloads"][jndex].y += stat.y;
+							found = true;
+							break;
 						}
-						if (!found) {
-							stats[serverId]["uploads"][stats[serverId]["uploads"].length] = stat;
-						}
-
-						found = false;
-						for(var jndex = 0; jndex < stats[allId]["uploads"].length; ++jndex) {
-							if (stats[allId]["uploads"][jndex].x_string == stat.x_string) {
-								stats[allId]["uploads"][jndex].y += stat.y;
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
-							stats[allId]["uploads"][stats[allId]["uploads"].length] = stat;
-						}
-
-						// Download
-
-						var stat = {
-							x: new Date(log["vlo_log_date"]),
-							y: log["vlo_download_rate"] * 1.,
-							x_string : log["vlo_log_date"]
-						};
-
-						stats[vpnId]["downloads"][stats[vpnId]["downloads"].length] = stat;
-
-						found = false;
-						for(var jndex = 0; jndex < stats[serverId]["downloads"].length; ++jndex) {
-							if (stats[serverId]["downloads"][jndex].x_string == stat.x_string) {
-								stats[serverId]["downloads"][jndex].y += stat.y;
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
-							stats[serverId]["downloads"][stats[serverId]["downloads"].length] = stat;
-						}
-
-						found = false;
-						for(var jndex = 0; jndex < stats[allId]["downloads"].length; ++jndex) {
-							if (stats[allId]["downloads"][jndex].x_string == stat.x_string) {
-								stats[allId]["downloads"][jndex].y += stat.y;
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
-							stats[allId]["downloads"][stats[allId]["downloads"].length] = stat;
-						}
-
+					}
+					if (!found) {
+						stats[allId]["downloads"][stats[allId]["downloads"].length] = stat;
 					}
 				}
 			}
@@ -139,8 +142,6 @@ function updateLogs() {
 				if (!chartContainer.length) continue;
 
 				chartContainer.show();
-
-				// TODO Compute a better width
 
 				var chart = new CanvasJS.Chart(panelId + "-chart",
 		    	    {
@@ -207,7 +208,41 @@ function updateLogs() {
 		    		chart.render();
 			}
 
+			$("li span#total-download-rate").text(humanFileSize(total["downloadRate"], false) + "/s");
+			$("li span#total-upload-rate").text(humanFileSize(total["uploadRate"], false) + "/s");
 
+			for(var index = 0; index < data.servers.length; ++index) {
+				var log = data.servers[index];
+				if (log["vlo_last_log"] == 1) {
+					var serverId = log["vlo_server_id"];
+					var serverTr = $("#server-" + serverId);
+					if (serverTr.length > 0) {
+						var bandwidth = serverTr.data("bandwidth");
+						var consumption = log["vlo_upload_rate"] * 1. + log["vlo_download_rate"] * 1.;
+						var occupation = consumption * 100 / bandwidth;
+
+						serverTr.find(".users").text(log["vlo_number_of_users"]);
+//						serverTr.find(".used-capacity").text(occupation.toFixed(1) + "%");
+
+						var progressBarClass = "progress-bar-success";
+						if (occupation < 60) {
+							progressBarClass = "progress-bar-success";
+						}
+						else if (occupation < 80) {
+							progressBarClass = "progress-bar-warning";
+						}
+						else {
+							progressBarClass = "progress-bar-danger";
+						}
+
+						var progressBar = serverTr.find(".used-capacity .progress-bar");
+						progressBar.css({width: occupation.toFixed(1) + "%"});
+						progressBar.attr("aria-valuenow", occupation.toFixed(1));
+						progressBar.text(occupation.toFixed(1) + "%");
+						progressBar.removeClass("progress-bar-success").removeClass("progress-bar-warning").removeClass("progress-bar-danger").addClass(progressBarClass);
+					}
+				}
+			}
 		}
 	}, "json");
 }
