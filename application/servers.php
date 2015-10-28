@@ -60,22 +60,23 @@ function humanFileSize($bytes, $si, $decimals = 0) {
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Label</th>
-					<th>Description</th>
-					<th>Utilisateurs</th>
-					<th>Occupation</th>
+					<th class="server-name"><?php echo lang("servers_name"); ?></th>
+					<th class="server-description"><?php echo lang("servers_description"); ?></th>
+					<th class="server-users"><?php echo lang("servers_users"); ?></th>
+					<th class="server-occupation"><?php echo lang("servers_occupation"); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 			<?php 	foreach($servers as $server) {?>
 				<tr id="server-<?php echo $server["vse_id"]; ?>" data-bandwidth="<?php echo $server["vse_bandwidth"]; ?>">
 					<td><?php echo $server["vse_label"]; ?></td>
-					<td>Bandwidth : <?php echo str_replace("iB", "b", humanFileSize($server["vse_bandwidth"] * 8, false, 0)); ?>ps</td>
-					<td class="users">0</td>
+					<td><?php echo lang("servers_server_description"); ?> : <?php echo str_replace("iB", "b", humanFileSize($server["vse_bandwidth"] * 8, false, 0)); ?>ps</td>
+					<td class="users text-right">0</td>
 					<td class="used-capacity">
 						<div class="progress">
-							<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-								0%
+							<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+								style="width: 0%; text-shadow: -1px -1px 0 #888, 1px -1px 0 #888, -1px 1px 0 #888, 1px 1px 0 #888;">
+								<span style="position: relative; left: 2px;">0.0%</span>
 							</div>
 						</div>
 					</td>

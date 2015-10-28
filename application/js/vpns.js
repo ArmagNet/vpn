@@ -208,8 +208,9 @@ function updateLogs() {
 		    		chart.render();
 			}
 
-			$("li span#total-download-rate").text(humanFileSize(total["downloadRate"], false) + "/s");
-			$("li span#total-upload-rate").text(humanFileSize(total["uploadRate"], false) + "/s");
+			$("li#total-rates").show();
+			$("li#total-rates span#total-download-rate").text(humanFileSize(total["downloadRate"], false) + "/s");
+			$("li#total-rates span#total-upload-rate").text(humanFileSize(total["uploadRate"], false) + "/s");
 
 			for(var index = 0; index < data.servers.length; ++index) {
 				var log = data.servers[index];
@@ -238,7 +239,7 @@ function updateLogs() {
 						var progressBar = serverTr.find(".used-capacity .progress-bar");
 						progressBar.css({width: occupation.toFixed(1) + "%"});
 						progressBar.attr("aria-valuenow", occupation.toFixed(1));
-						progressBar.text(occupation.toFixed(1) + "%");
+						progressBar.find("span").text(occupation.toFixed(1) + "%");
 						progressBar.removeClass("progress-bar-success").removeClass("progress-bar-warning").removeClass("progress-bar-danger").addClass(progressBarClass);
 					}
 				}

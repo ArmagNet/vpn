@@ -90,3 +90,19 @@ html,body {
     right: 10px;
     border-radius: 10px;
 }
+
+.server-name {
+    width: 100px;
+}
+
+.server-description {
+
+}
+
+.server-users {
+    width: 100px;
+}
+
+.server-occupation {
+    width: 100px;
+}

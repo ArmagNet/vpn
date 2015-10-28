@@ -120,7 +120,7 @@ $language = SessionUtils::getLanguage($_SESSION);
 					</li>
 
 					<?php 	if (count($vpns)) {?>
-					<li>
+					<li style="display: none;" id="total-rates">
 						<a href="#">
 							<span class="badge">
 								<span id="total-download-rate" title="<?php echo lang("vpn_log_download_rate"); ?>"

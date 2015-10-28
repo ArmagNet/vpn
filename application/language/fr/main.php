@@ -88,6 +88,12 @@ $lang["vpn_log_download_rate"] = "Vitesse de téléchargement";
 $lang["vpn_log_upload"] = "Téléversement";
 $lang["vpn_log_download"] = "Téléchargement";
 
+$lang["servers_name"] = "Nom";
+$lang["servers_description"] = "Description";
+$lang["servers_users"] = "Utilisateurs";
+$lang["servers_occupation"] = "Occupation";
+$lang["servers_server_description"] = "Bande passante";
+
 $lang["error_login_ban"] = "Votre IP a été bloquée pour 10mn.";
 $lang["error_login_bad"] = "Vérifier vos identifiants, l'identification a échouée.";
 
