@@ -1,3 +1,8 @@
+if (!chart_upload_legend_name) var chart_upload_legend_name = "Vitesse de téléversement";
+if (!chart_download_legend_name) var chart_download_legend_name = "Vitesse de téléchargement";
+if (!chart_axisy_label) var chart_axisy_label = "Vitesse";
+if (!chart_axisx_label) var chart_axisx_label = "Date";
+
 function humanFileSize(bytes, si) {
     var thresh = si ? 1000 : 1024;
     if(Math.abs(bytes) < thresh) {
@@ -148,7 +153,7 @@ function updateLogs() {
 					  height: 300,
 					  width: chartWidth,
 		    	      title:{
-		    	/*        text: "Tweets et Validation dans le temps"*/
+		    	/*        text: ""*/
 		    	      },
 		    	      toolTip: {
 		    	        shared: true,
@@ -156,7 +161,6 @@ function updateLogs() {
 		    	          var body;
 		    	          var head;
 		    	          var date = e.entries[0].dataPoint.x;
-//		    			  var printedDate = (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1) + '/' + (date.getDate() < 10 ? '0' : '') + date.getDate() + '/' + date.getFullYear();
 		    			  var printedDate = (date.getHours() < 10 ? '0' : '') + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 
 		    	          head = "<span style = 'color:DodgerBlue; '><strong>@ "+ printedDate  + "</strong></span><br/>";
@@ -164,42 +168,33 @@ function updateLogs() {
 		    	          body = "<span style= 'color:"+e.entries[0].dataSeries.color + "'> " + e.entries[0].dataSeries.name + "</span>: <strong>"+  humanFileSize(e.entries[0].dataPoint.y, false) + "/s</strong>";
 		    	          body +="<br/>";
 		    	          body +="<span style= 'color:"+e.entries[1].dataSeries.color + "'> " + e.entries[1].dataSeries.name + "</span>: <strong>"+  humanFileSize(e.entries[1].dataPoint.y, false) + "/s</strong>";
-//		    	          body +="<br/>";
-//		    	          body +="<span style= 'color:"+e.entries[2].dataSeries.color + "'> " + e.entries[2].dataSeries.name + "</span>: <strong>"+  e.entries[2].dataPoint.y + "</strong>";
 
 		    	          return (head.concat(body));
 		    	        }
 		    	      },
 		    	      axisY:{
-		    	        title: "Vitesse",
+		    	        title: chart_axisy_label,
 		    	        includeZero: true,
 		    	        lineColor: "#369EAD",
 		    	        labelFormatter: function(e){
 		    				return  humanFileSize(e.value, false) + "/s";
 		    			}
 		    	      },
-		    	/*
-		    	      axisY2:{
-		    	          title: "<?php echo lang("mypage_score_chart_axisY", false); ?>",
-		    	          includeZero: false,
-		    	          lineColor: "#C24642"
-		    	        },
-		    	*/
 		    	      axisX: {
-		    	          title: "Date",
+		    	          title: chart_axisx_label,
 		    	          valueFormatString: "HH:mm"
 		    	        },
 		    	      data: [
 			    	      {
 			    	        type: "spline",
 			    	        showInLegend: true,
-			    	        name: "Vitesse de téléversement",
+			    	        name: chart_upload_legend_name,
 			    	        dataPoints: logs["uploads"]
 			    	      },
 			    	      {
 			    	        type: "spline",
 			    	        showInLegend: true,
-			    	        name: "Vitesse de téléchargement",
+			    	        name: chart_download_legend_name,
 			    	        dataPoints: logs["downloads"]
 			    	      }
 		    	      ]
@@ -223,7 +218,6 @@ function updateLogs() {
 						var occupation = consumption * 100 / bandwidth;
 
 						serverTr.find(".users").text(log["vlo_number_of_users"]);
-//						serverTr.find(".used-capacity").text(occupation.toFixed(1) + "%");
 
 						var progressBarClass = "progress-bar-success";
 						if (occupation < 60) {

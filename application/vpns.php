@@ -207,4 +207,12 @@ include_once("header.php");
 	</div>
 </div>
 
+<script type="text/javascript">
+
+var chart_upload_legend_name = "<?php echo str_replace("\"", "\\\"", lang("vpn_chart_upload_rate")); ?>";
+var chart_download_legend_name = "<?php echo str_replace("\"", "\\\"", lang("vpn_chart_download_rate")); ?>";
+var chart_axisy_label = "<?php echo str_replace("\"", "\\\"", lang("vpn_chart_rate")); ?>";
+var chart_axisx_label = "<?php echo str_replace("\"", "\\\"", lang("vpn_chart_date")); ?>";
+
+</script>
 <?php include("footer.php");?>

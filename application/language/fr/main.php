@@ -87,6 +87,10 @@ $lang["vpn_log_upload_rate"] = "Vitesse de téléversement";
 $lang["vpn_log_download_rate"] = "Vitesse de téléchargement";
 $lang["vpn_log_upload"] = "Téléversement";
 $lang["vpn_log_download"] = "Téléchargement";
+$lang["vpn_chart_upload_rate"] = "Upload";
+$lang["vpn_chart_download_rate"] = "Download";
+$lang["vpn_chart_rate"] = "Vitesse";
+$lang["vpn_chart_date"] = "Date";
 
 $lang["servers_name"] = "Nom";
 $lang["servers_description"] = "Description";
