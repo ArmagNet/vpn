@@ -25,7 +25,7 @@ $servers = $vpnServerBo->get();
 function humanFileSize($bytes, $si, $decimals = 0) {
 	$thresh = $si ? 1000 : 1024;
 	if(abs($bytes) < $thresh) {
-		return number_format($bytes, $decimals) + ' B';
+		return number_format($bytes, $decimals) . ' B';
 	}
 
 	$units = $si ?

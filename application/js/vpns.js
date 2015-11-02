@@ -3,10 +3,13 @@ if (!chart_download_legend_name) var chart_download_legend_name = "Vitesse de t√
 if (!chart_axisy_label) var chart_axisy_label = "Vitesse";
 if (!chart_axisx_label) var chart_axisx_label = "Date";
 
-function humanFileSize(bytes, si) {
+function humanFileSize(bytes, si, decimals, scale) {
     var thresh = si ? 1000 : 1024;
+    if (!decimals && decimals != 0) decimals = 1;
+    if (!scale) scale = 1;
+
     if(Math.abs(bytes) < thresh) {
-        return bytes.toFixed(1) + ' B';
+        return bytes.toFixed(decimals) + ' B';
     }
     var units = si
         ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
@@ -17,7 +20,7 @@ function humanFileSize(bytes, si) {
         ++u;
     }
     while(Math.abs(bytes) >= thresh && u < units.length - 1);
-    return bytes.toFixed(1)+' '+units[u];
+    return bytes.toFixed(decimals)+' '+units[u];
 }
 
 function updateLogs() {
