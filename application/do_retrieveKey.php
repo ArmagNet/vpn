@@ -28,16 +28,28 @@ function getOvpn($vpn) {
 
 	$ovpn .= "dev " . $vpn["vse_dev"] . "\n";
 	$ovpn .= "proto " . $vpn["vse_proto"] . "\n";
-	$ovpn .= "log /my/log/path/openvpn.log\n";
-	$ovpn .= "verb 3\n";
+//	$ovpn .= "log /my/log/path/openvpn.log\n";
+	$ovpn .= "verb 4\n";
 	$ovpn .= "ca " . $vpn["vpn_hash"] . $vpn["vse_id"] . ".cert\n";
-	$ovpn .= "cert " . $vpn["vpn_hash"] . ".crt\n";
+	$ovpn .= "cert " . $vpn["vpn_hash"] . ".cert\n";
 	$ovpn .= "key " . $vpn["vpn_hash"] . ".key" . "\n";
 	$ovpn .= "client 1\n";
 	$ovpn .= "remote-cert-tls " . $vpn["vse_remote_cert_tls"] . "\n";
 	$ovpn .= "remote " . $vpn["vse_remote_ip"] . " " . $vpn["vse_remote_port"] . "\n";
 	$ovpn .= "cipher " . $vpn["vse_cipher"] . "\n";
 	$ovpn .= "comp-lzo " . $vpn["vse_comp_lzo"] . "\n";
+	$ovpn .= "resolv-retry infinite\n";
+	$ovpn .= "nobind\n";
+	$ovpn .= "persist-key\n";
+	$ovpn .= "persist-tun\n";
+	$ovpn .= "\n";
+	$ovpn .= "dhcp-option DNS 80.67.169.12\n";
+	$ovpn .= "\n";
+	$ovpn .= "# Change default routes\n";
+	$ovpn .= "redirect-gateway def1\n";
+	$ovpn .= "\n";
+	$ovpn .= "#tun-ipv6\n";
+	$ovpn .= "#route-ipv6 2000::/3\n";
 
 	return $ovpn;
 }
@@ -88,7 +100,6 @@ switch($_REQUEST["type"]) {
 		$filename = $vpn["vpn_hash"] . $vpn["vse_id"] . ".pem";
 		break;
 	case "ovpn":
-		// TODO
 		$content = getOvpn($vpn);
 		$filename = $vpn["vpn_hash"] . $vpn["vse_id"] . ".ovpn";
 		break;
