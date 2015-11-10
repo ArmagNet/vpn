@@ -30,9 +30,17 @@ function getOvpn($vpn) {
 	$ovpn .= "proto " . $vpn["vse_proto"] . "\n";
 //	$ovpn .= "log /my/log/path/openvpn.log\n";
 	$ovpn .= "verb 4\n";
-	$ovpn .= "ca " . $vpn["vpn_hash"] . $vpn["vse_id"] . ".cert\n";
-	$ovpn .= "cert " . $vpn["vpn_hash"] . ".cert\n";
-	$ovpn .= "key " . $vpn["vpn_hash"] . ".key" . "\n";
+
+	if (!isset($vpn["vse_cacert"]) || !$vpn["vse_cacert"]) {
+		$ovpn .= "ca " . $vpn["vpn_hash"] . $vpn["vse_id"] . ".cert\n";
+	}
+	if (!isset($vpn["vpn_cert"]) || !$vpn["vpn_cert"]) {
+		$ovpn .= "cert " . $vpn["vpn_hash"] . ".cert\n";
+	}
+	if (!isset($vpn["vpn_key"]) || !$vpn["vpn_key"]) {
+		$ovpn .= "key " . $vpn["vpn_hash"] . ".key" . "\n";
+	}
+
 	$ovpn .= "client 1\n";
 	$ovpn .= "remote-cert-tls " . $vpn["vse_remote_cert_tls"] . "\n";
 	$ovpn .= "remote " . $vpn["vse_remote_ip"] . " " . $vpn["vse_remote_port"] . "\n";
@@ -50,6 +58,24 @@ function getOvpn($vpn) {
 	$ovpn .= "\n";
 	$ovpn .= "#tun-ipv6\n";
 	$ovpn .= "#route-ipv6 2000::/3\n";
+
+	if (isset($vpn["vse_cacert"]) && $vpn["vse_cacert"]) {
+		$ovpn .= "\n<ca>\n";
+		$ovpn .= $vpn["vse_cacert"];
+		$ovpn .= "\n</ca>\n";
+	}
+
+	if (isset($vpn["vpn_cert"]) && $vpn["vpn_cert"]) {
+		$ovpn .= "\n<cert>\n";
+		$ovpn .= $vpn["vpn_cert"];
+		$ovpn .= "\n</cert>\n";
+	}
+
+	if (isset($vpn["vpn_key"]) && $vpn["vpn_key"]) {
+		$ovpn .= "\n<key>\n";
+		$ovpn .= $vpn["vpn_key"];
+		$ovpn .= "\n</key>\n";
+	}
 
 	return $ovpn;
 }
