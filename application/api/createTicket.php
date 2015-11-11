@@ -48,7 +48,7 @@ $product = $arguments["product"];
 
 $ticket = array("tic_product_code" => $product, "tic_account_id" => $account["acc_id"]);
 $ticket["tic_creation_date"] = new DateTime();
-$ticket["tic_creation_date"] = $ticket["tic_creation_date"]-> format("Y-m-d H:i:s");
+$ticket["tic_creation_date"] = $ticket["tic_creation_date"]->format("Y-m-d H:i:s");
 
 switch ($ticket["tic_product_code"]) {
 	case "vpn_year":

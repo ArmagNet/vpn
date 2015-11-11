@@ -52,6 +52,7 @@ $lang["vpn_create_armagnet_order_annual_membership_goal2"] = "Vous avez lu et ac
 $lang["vpn_create_armagnet_order_vpn_membership"] = "VPN pour un an (à partir de 12€, vous êtes libre de mettre plus)";
 $lang["vpn_create_armagnet_order_vpn_year"] = "VPN pour un an";
 $lang["vpn_create_armagnet_order_vpn_6months"] = "VPN pour 6 mois";
+$lang["vpn_create_armagnet_order_vpn_ticket"] = "Vous avez un ticket";
 $lang["vpn_create_armagnet_order_total_label"] = "Total :";
 
 $lang["vpn_create_armagnet_alreadyExistsAlert"] = "Ce compte existe déjà";

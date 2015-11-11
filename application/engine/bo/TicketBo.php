@@ -62,6 +62,14 @@ class TicketBo {
 		return $tickets[0];
 	}
 
+	function getTicket($id) {
+		$tickets = $this->getTickets(array("tic_id" => $id));
+
+		if (count($tickets) == 0) return null;
+
+		return $tickets[0];
+	}
+
 	function getTickets($filters) {
 		$query = "	SELECT * FROM tickets ";
 		$args = array();
@@ -71,6 +79,11 @@ class TicketBo {
 		if ($filters && isset($filters["tic_key"]) && $filters["tic_key"]) {
 			$args["tic_key"] = $filters["tic_key"];
 			$query .= "	AND tic_key = :tic_key";
+		}
+
+		if ($filters && isset($filters["tic_id"]) && $filters["tic_id"]) {
+			$args["tic_id"] = $filters["tic_id"];
+			$query .= "	AND tic_id = :tic_id";
 		}
 
 		//		echo showQuery($query, $args);

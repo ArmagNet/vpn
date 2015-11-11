@@ -25,18 +25,22 @@ require_once("config/database.php");
 require_once("engine/payname/api.php");
 require_once("engine/bo/OrderBo.php");
 require_once("engine/bo/PaymentBo.php");
+require_once("engine/bo/TicketBo.php");
 
 $paynameApi = new PaynameApiClient($config["vpn"]["payname"]["api_url"], $config["vpn"]["payname"]["token"]);
 $connection = openConnection();
 
 $orderBo = OrderBo::newInstance($connection);
 $paymentBo = PaymentBo::newInstance($connection);
+$ticketBo = TicketBo::newInstance($connection);
 
 $order = array();
 $order["ord_amount"] = 0;
 $order["ord_lines"] = array();
 
 $vpnId = $_REQUEST["vpnId"];
+
+// TODO retrieve account to put it into the order
 
 if (isset($_REQUEST["askMembership"]) && intval($_REQUEST["askMembership"])) {
 	$orderLine = array();
@@ -63,6 +67,35 @@ if (isset($_REQUEST["askMembership"]) && intval($_REQUEST["askMembership"])) {
 		exit();
 	}
 }
+else if (isset($_REQUEST["vpnTicket"]) && $_REQUEST["vpnTicket"]) {
+	$ticket = $ticketBo->getTicketByKey($_REQUEST["vpnTicket"]);
+
+	// Check if the ticket exist AND not used
+	if (!$ticket || $ticket["tic_use_date"]) {
+		exit();
+	}
+
+	$orderLine["oli_product_code"] = $ticket["tic_product_code"];
+	$orderLine["oli_additional_information"] = array("vpnId" => $vpnId);
+
+	switch($orderLine["oli_product_code"]) {
+		case "vpn_year":
+			$orderLine["oli_label"] = "VPN pour un an";
+			$orderLine["oli_unity_price"] = YEAR_VPN_PRICE;
+			break;
+		case "vpn_6months":
+			$orderLine["oli_label"] = "VPN pour 6 mois";
+			$orderLine["oli_unity_price"] = SIXMONTHS_PRICE;
+			break;
+		default:
+			exit();
+	}
+
+	$orderLine["oli_quantity"] = "1";
+	$orderLine["oli_amount"] = 0;
+	$order["ord_lines"][] = $orderLine;
+	$order["ord_amount"] += $orderLine["oli_amount"];
+}
 else {
 	$orderLine["oli_product_code"] = $_REQUEST["vpnCode"];
 	$orderLine["oli_additional_information"] = array("vpnId" => $vpnId);
@@ -88,23 +121,41 @@ else {
 
 $orderBo->save($order);
 
-$backUrl = "https://www.armagnet.fr/vpn/do_paymentResult.php?oid=" . $order["ord_id"];
+if (isset($ticket)) {
+	$payment = array("pay_request" => array());
+	$payment["pay_order_id"] = $order["ord_id"];
+	$payment["pay_type"] = "ticket";
+	$payment["pay_amount"] = 0;
+	$payment["pay_request"] = "";
+	$payment["pay_response"] = "";
+	$payment["pay_ticket_id"] = $ticket["tic_id"];
 
-if ($_SERVER["HTTP_REFERER"]) {
-	$backUrl .= "&referer=" . urlencode($_SERVER["HTTP_REFERER"]);
+	$paymentBo->save($payment);
+
+	$paymentLink = "do_paymentResult.php?oid=" . $order["ord_id"];
+
+	header("Location: $paymentLink");
+	exit();
 }
+else {
+	$backUrl = "https://www.armagnet.fr/vpn/do_paymentResult.php?oid=" . $order["ord_id"];
 
-$payment = array("pay_request" => array());
-$payment["pay_order_id"] = $order["ord_id"];
-$payment["pay_type"] = "payname";
-$payment["pay_amount"] = number_format($order["ord_amount"], 2, '.', '');
-$payment["pay_request"] = $paynameApi->createPayment($payment["pay_amount"], "ARMAGNET_" . date("Y") . "_" . $payment["pay_order_id"], "direct", $payment["pay_order_id"], $backUrl);
-$payment["pay_response"] = "";
+	if ($_SERVER["HTTP_REFERER"]) {
+		$backUrl .= "&referer=" . urlencode($_SERVER["HTTP_REFERER"]);
+	}
 
-$paymentBo->save($payment);
+	$payment = array("pay_request" => array());
+	$payment["pay_order_id"] = $order["ord_id"];
+	$payment["pay_type"] = "payname";
+	$payment["pay_amount"] = number_format($order["ord_amount"], 2, '.', '');
+	$payment["pay_request"] = $paynameApi->createPayment($payment["pay_amount"], "ARMAGNET_" . date("Y") . "_" . $payment["pay_order_id"], "direct", $payment["pay_order_id"], $backUrl);
+	$payment["pay_response"] = "";
 
-$paymentLink = $payment["pay_request"]["link"];
+	$paymentBo->save($payment);
 
-header("Location: $paymentLink");
-exit();
+	$paymentLink = $payment["pay_request"]["link"];
+
+	header("Location: $paymentLink");
+	exit();
+}
 ?>

@@ -173,6 +173,17 @@ include_once("header.php");
 								type="button" style="width: 100%;" class="list-group-item text-left ">
 								<?php echo lang("vpn_create_armagnet_order_vpn_6months"); ?><span class="badge">33&euro;</span>
 							</a>
+							<a href="#" id="vpn-ticket-button"
+								data-price="0"
+								type="button" style="width: 100%;" class="list-group-item text-left ">
+								<?php echo lang("vpn_create_armagnet_order_vpn_ticket"); ?><span class="badge">
+								<span class="glyphicon glyphicon-ok text-success" style="display: none;"></span>
+								<span class="glyphicon glyphicon-remove text-danger" style="display: none;"></span>
+
+								<input id="vpn-ticket"
+									style="width: 73px; color: black;"
+									value=""></span>
+							</a>
 						</div>
 
 						<div class="form-group">
@@ -237,7 +248,12 @@ function computeTotal() {
 function testOrderButton() {
 	$("#orderButton").removeClass("disabled");
 
-	if ($("#createArmagnetVpnForm #totalPrice").data("price") == 0) {
+	if ($("#createArmagnetVpnForm #totalPrice").data("price") == 0 && !$("#vpn-ticket-button").hasClass("list-group-item-success")) {
+		$("#orderButton").addClass("disabled");
+		return;
+	}
+
+	if ($("#vpn-ticket-button").hasClass("list-group-item-success") && !$("#vpn-ticket-button .badge").hasClass("alert-success")) {
 		$("#orderButton").addClass("disabled");
 		return;
 	}
@@ -293,6 +309,9 @@ function showOrderForm(vpnHash) {
 	}
 	else if ($("#products #vpn-6months-button.list-group-item-success").length) {
 		form.append("<input type='hidden' name='vpnCode' value='vpn_6months'>");
+	}
+	else if ($("#products #vpn-ticket-button.list-group-item-success").length) {
+		form.append("<input type='hidden' name='vpnTicket' value='"+$("#products #vpn-ticket").val()+"'>");
 	}
 
 	$("body").append(form);
@@ -372,6 +391,39 @@ $(function() {
 		$("#products a").removeClass("list-group-item-success");
 		$("#products #vpn-6months-button").addClass("list-group-item-success");
 		computeTotal();
+	});
+
+	$("#products #vpn-ticket-button").click(function(event) {
+		$("#products a").removeClass("list-group-item-success");
+		$("#products #vpn-ticket-button").addClass("list-group-item-success");
+		computeTotal();
+	});
+
+	$("#products #vpn-ticket").keyup(function(event) {
+		var key = $(this).val();
+
+		if (key.length == 10) {
+			$.post("do_checkTicket.php", {ticket: key}, function(data) {
+				if (data.ok) {
+					$("#products #vpn-ticket-button .badge").addClass("alert-success").removeClass("alert-danger");
+					$("#products #vpn-ticket-button .glyphicon-ok").show();
+					$("#products #vpn-ticket-button .glyphicon-remove").hide();
+				}
+				else {
+					$("#products #vpn-ticket-button .badge").removeClass("alert-success").addClass("alert-danger");
+					$("#products #vpn-ticket-button .glyphicon-ok").hide();
+					$("#products #vpn-ticket-button .glyphicon-remove").show();
+				}
+
+				testOrderButton();
+			}, "json");
+		}
+		else {
+			$("#products #vpn-ticket-button .badge").removeClass("alert-success").removeClass("alert-danger");
+			$("#products #vpn-ticket-button .glyphicon-ok").hide();
+			$("#products #vpn-ticket-button .glyphicon-remove").hide();
+			testOrderButton();
+		}
 	});
 
 	$("a.list-group-item").click(function(event) {

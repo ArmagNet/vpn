@@ -25,6 +25,7 @@ require_once("config/database.php");
 require_once("engine/payname/api.php");
 require_once("engine/bo/OrderBo.php");
 require_once("engine/bo/PaymentBo.php");
+require_once("engine/bo/TicketBo.php");
 require_once("engine/bo/VpnBo.php");
 
 $paynameApi = new PaynameApiClient($config["vpn"]["payname"]["api_url"], $config["vpn"]["payname"]["token"]);
@@ -32,6 +33,7 @@ $connection = openConnection();
 
 $orderBo = OrderBo::newInstance($connection);
 $paymentBo = PaymentBo::newInstance($connection);
+$ticketBo = TicketBo::newInstance($connection);
 
 $orderId = $_REQUEST["oid"];
 
@@ -39,13 +41,36 @@ $payment = $paymentBo->getPaymentByOrderId($orderId);
 
 // print_r($payment);
 
-$response = $paynameApi->getPaymentInformation($payment["pay_request"]["hash"]);
+if ($payment["pay_type"] == "ticket") {
+	$ticket = $ticketBo->getTicket($payment["pay_ticket_id"]);
 
-// print_r($response);
+	$response = array();
 
-if ($response["status"] != "created") {
+	$response["createdAt"] = new DateTime();
+	$response["createdAt"] = $response["createdAt"]->format("Y-m-d H:i:s");
+
+	if (!$ticket || $ticket["tic_use_date"]) {
+		$response["status"] = "failed";
+	}
+	else {
+		$response["status"] = "finished";
+		$ticket["tic_use_date"] = $response["createdAt"];
+
+		$ticketBo->save($ticket);
+	}
+
 	$payment["pay_response"] = $response;
 	$paymentBo->save($payment);
+}
+else {
+	$response = $paynameApi->getPaymentInformation($payment["pay_request"]["hash"]);
+
+	// print_r($response);
+
+	if ($response["status"] != "created") {
+		$payment["pay_response"] = $response;
+		$paymentBo->save($payment);
+	}
 }
 
 $referer = "";

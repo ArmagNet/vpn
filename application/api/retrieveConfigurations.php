@@ -23,7 +23,7 @@ if (!isset($arguments)) {
 	exit();
 }
 
-error_log(print_r($arguments, true));
+//error_log(print_r($arguments, true));
 
 require_once("engine/bo/AccountBo.php");
 require_once("engine/bo/VpnBo.php");
