@@ -44,11 +44,23 @@ if (!$account || !$account["tic_account_id"]) {
 	exit();
 }
 
-$amount = $arguments["amount"];
+$product = $arguments["product"];
 
-$ticket = array("tic_amount" => $amount, "tic_account_id" => $account["acc_id"]);
+$ticket = array("tic_product_code" => $product, "tic_account_id" => $account["acc_id"]);
 $ticket["tic_creation_date"] = new DateTime();
 $ticket["tic_creation_date"] = $ticket["tic_creation_date"]-> format("Y-m-d H:i:s");
+
+switch ($ticket["tic_product_code"]) {
+	case "vpn_year":
+		$ticket["tic_amount"] = 12;
+		break;
+	case "vpn_6months":
+		$ticket["tic_amount"] = 6;
+		break;
+	default:
+		echo json_encode(array("ko" => "ko", "message" => "badProduct"));
+		exit();
+}
 
 // Create the key
 do {
@@ -65,6 +77,6 @@ while($existingTicket);
 $ticket["tic_key"] = $key;
 $ticketBo->save($ticket);
 
-echo json_encode(array("ok" => "ok", "ticket" => $key, "amount" => $amount));
+echo json_encode(array("ok" => "ok", "ticket" => $key, "amount" => $amount, "product" => $product));
 
 ?>
