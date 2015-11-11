@@ -76,6 +76,7 @@ class AccountBo {
 		$query = "	SELECT *
 					FROM accounts
 					JOIN persons ON acc_person_id = per_id
+					LEFT_JOIN ticketers ON acc_id = tic_account_id
 					WHERE acc_id = :acc_id AND 1 = 1 ";
 
 		$statement = $this->pdo->prepare($query);
@@ -102,6 +103,7 @@ class AccountBo {
 		$query = "	SELECT *
 					FROM accounts
 					JOIN persons ON acc_person_id = per_id
+					LEFT_JOIN ticketers ON acc_id = tic_account_id
 					WHERE (acc_login = :login OR per_mail = :login) AND 1 = 1 ";
 
 		$statement = $this->pdo->prepare($query);
