@@ -152,6 +152,7 @@ class OrderBo {
 		switch ($code) {
 			case "vpn_membership":
 			case "vpn_year":
+			case "parpaing_vpn_year":
 				$validity = 12;
 			case "vpn_6months":
 				if (!isset($validity)) {

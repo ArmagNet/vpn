@@ -35,6 +35,7 @@ if (!$ticket || $ticket["tic_use_date"]) {
 }
 else {
 	$data["ok"] = "ok";
+	$data["product"] = $ticket["tic_product_code"];
 }
 
 echo json_encode($data);

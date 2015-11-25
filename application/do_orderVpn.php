@@ -79,13 +79,17 @@ else if (isset($_REQUEST["vpnTicket"]) && $_REQUEST["vpnTicket"]) {
 	$orderLine["oli_additional_information"] = array("vpnId" => $vpnId);
 
 	switch($orderLine["oli_product_code"]) {
+		case "parpaing_vpn_year":
+			$orderLine["oli_label"] = "Parpaing avec VPN pour un an";
+			$orderLine["oli_unity_price"] = 0;
+			break;
 		case "vpn_year":
 			$orderLine["oli_label"] = "VPN pour un an";
-			$orderLine["oli_unity_price"] = YEAR_VPN_PRICE;
+			$orderLine["oli_unity_price"] = 0;
 			break;
 		case "vpn_6months":
 			$orderLine["oli_label"] = "VPN pour 6 mois";
-			$orderLine["oli_unity_price"] = SIXMONTHS_PRICE;
+			$orderLine["oli_unity_price"] = 0;
 			break;
 		default:
 			exit();

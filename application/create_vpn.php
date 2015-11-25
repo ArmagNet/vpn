@@ -183,6 +183,8 @@ include_once("header.php");
 								<input id="vpn-ticket"
 									style="width: 73px; color: black;"
 									value=""></span>
+								<div class="clearfix"></div>
+								<span class="small ticket-product"></span>
 							</a>
 						</div>
 
@@ -220,6 +222,13 @@ include_once("header.php");
 <div class="lastDiv"></div>
 
 <script>
+
+var i18n_products = {};
+
+i18n_products["vpn_year"] = "<?php echo lang("vpn_create_armagnet_order_vpn_ticket_year"); ?>";
+i18n_products["vpn_6months"] = "<?php echo lang("vpn_create_armagnet_order_vpn_ticket_6month"); ?>";
+i18n_products["parpaing_vpn_year"] = "<?php echo lang("vpn_create_armagnet_order_vpn_ticket_parpaing_year"); ?>";
+
 
 function setKeyStatus() {
 	var noKeyFunction = ($("#hasPrivateKey").prop("checked")) ? "hide" : "show";
@@ -402,12 +411,15 @@ $(function() {
 	$("#products #vpn-ticket").keyup(function(event) {
 		var key = $(this).val();
 
+		$("#products #vpn-ticket-button .ticket-product").text("");
+
 		if (key.length == 10) {
 			$.post("do_checkTicket.php", {ticket: key}, function(data) {
 				if (data.ok) {
 					$("#products #vpn-ticket-button .badge").addClass("alert-success").removeClass("alert-danger");
 					$("#products #vpn-ticket-button .glyphicon-ok").show();
 					$("#products #vpn-ticket-button .glyphicon-remove").hide();
+					$("#products #vpn-ticket-button .ticket-product").text(i18n_products[data.product]);
 				}
 				else {
 					$("#products #vpn-ticket-button .badge").removeClass("alert-success").addClass("alert-danger");
