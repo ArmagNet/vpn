@@ -51,7 +51,7 @@ $ticket["tic_creation_date"] = new DateTime();
 $ticket["tic_creation_date"] = $ticket["tic_creation_date"]->format("Y-m-d H:i:s");
 
 switch ($ticket["tic_product_code"]) {
-	case "parpaing_vpn_year":
+	case "pave_vpn_year":
 		$ticket["tic_amount"] = 55;
 		break;
 	case "vpn_year":

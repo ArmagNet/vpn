@@ -55,7 +55,7 @@ $lang["vpn_create_armagnet_order_vpn_6months"] = "VPN for six months";
 $lang["vpn_create_armagnet_order_vpn_ticket"] = "You have a ticket";
 $lang["vpn_create_armagnet_order_vpn_ticket_year"] = "One year of VPN offered";
 $lang["vpn_create_armagnet_order_vpn_ticket_6month"] = "Six months of VPN offered";
-$lang["vpn_create_armagnet_order_vpn_ticket_parpaing_year"] = "A Parpaing and a year of VPN offered ";
+$lang["vpn_create_armagnet_order_vpn_ticket_pave_year"] = "A Pavé and a year of VPN offered ";
 
 $lang["vpn_create_armagnet_order_total_label"] = "Total :";
 

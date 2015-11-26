@@ -79,7 +79,7 @@ else if (isset($_REQUEST["vpnTicket"]) && $_REQUEST["vpnTicket"]) {
 	$orderLine["oli_additional_information"] = array("vpnId" => $vpnId);
 
 	switch($orderLine["oli_product_code"]) {
-		case "parpaing_vpn_year":
+		case "pave_vpn_year":
 			$orderLine["oli_label"] = "Parpaing avec VPN pour un an";
 			$orderLine["oli_unity_price"] = 0;
 			break;

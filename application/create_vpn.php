@@ -227,7 +227,7 @@ var i18n_products = {};
 
 i18n_products["vpn_year"] = "<?php echo lang("vpn_create_armagnet_order_vpn_ticket_year"); ?>";
 i18n_products["vpn_6months"] = "<?php echo lang("vpn_create_armagnet_order_vpn_ticket_6month"); ?>";
-i18n_products["parpaing_vpn_year"] = "<?php echo lang("vpn_create_armagnet_order_vpn_ticket_parpaing_year"); ?>";
+i18n_products["pave_vpn_year"] = "<?php echo lang("vpn_create_armagnet_order_vpn_ticket_parpaing_year"); ?>";
 
 
 function setKeyStatus() {
