@@ -20,7 +20,6 @@
 <nav class="navbar navbar-inverse navbar-bottom" role="navigation">
 
 	<ul class="nav navbar-nav">
-		<li <?php if ($page == "about") echo 'class="active"'; ?>><a href="about.php"><?php echo lang("about_footer"); ?></a></li>
 		<li><a href="https://flattr.com/submit/auto?user_id=armagnet_fai&url=https%3A%2F%2vpn.armagnet.fr%2F" target="_blank"><img src="//api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a></li>
 	</ul>
 	<p class="navbar-text pull-right"><?php echo lang("vpn_footer"); ?></p>
